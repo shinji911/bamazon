@@ -41,12 +41,20 @@ connection.connect(function (err) {
             {
                 type: "input",
                 name: "buyingQty",
-                message: "How many would you like to buy?"
+                message: "How many would you like to buy?",
+                validate: function checkNum(name) {
+                    if (Number.isInteger(parseFloat(name)) && parseInt(name)>0) {                        
+                        return true;
+                    } else {
+                        console.log("\nMust enter an integer larger then 0");
+                        return false;
+                    }
+                }
             }
 
         //update chart or inform user
         ]).then(function (user) {
-            let buyingItem = results[parseInt(user.itemId) - 1]
+            let buyingItem = results[parseInt(user.itemId) - 1];
             if (user.buyingQty > buyingItem.stock_quantity) {
                 console.log("Insufficient quantity!");
                 connection.end();
